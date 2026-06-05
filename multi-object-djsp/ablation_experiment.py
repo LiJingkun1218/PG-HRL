@@ -17,8 +17,8 @@ out_analysis = 1
 run_num = 25    
 job_num = 50      
 drl_preference_runs = 5
-baseline = 'TBHL'
-benchmark = ['TBHL','Ablation1','Ablation2','Ablation3','Ablation4']
+baseline = 'PG_HRL'
+benchmark = ['PG_HRL','Ablation1','Ablation2','Ablation3','Ablation4']
 # Ablation experiment settings:
 #Ablation1: removing the start-time delay calculation module
 #Ablation2: removing the weight optimization module

@@ -3,7 +3,6 @@ Code User Manual (Full Version)
 
 **Applicable to the paper**：\[Adaptive Preference-Guided Hybrid Deep Reinforcement Learning with Mathematical Programming for Multi-Objective Just-in-Time Scheduling]
 
-**Core Algorithm**: PG-HRL (referred to as TBHL in the code implementation)
 
 
 1. Environment Dependencies
@@ -20,7 +19,7 @@ project\_root/
 │
 ├── algorithm/                          # Algorithm implementations
 │   ├── RL/                             # DRL algorithms
-│   │   ├── brain\_TBHL.py               # Proposed TBHL algorithm
+│   │   ├── brain\_PG_HRL.py               # Proposed PG_HRL algorithm
 │   │   ├── brain\_SAC.py                 
 │   │   ├── brain\_TD3.py                
 │   │   ├── brain\_DDQN.py                
@@ -50,13 +49,13 @@ project\_root/
 ├── compare\_rl\_algorithms.py                  # DRL algorithm horizontal comparison
 └── ablation\_experiment.py                      # Ablation experiment
 
-3. Quick Start: Training the TBHL Model
+3. Quick Start: Training the PG_HRL Model
 3.1 Single-Scenario Training
-	Default configuration: The TBHL algorithm is trained on all 9 orthogonal scenarios. To modify this, edit the **benchmark** and **job_numbers** variables in **train_rl_model.py**.
+	Default configuration: The PG_HRL algorithm is trained on all 9 orthogonal scenarios. To modify this, edit the **benchmark** and **job_numbers** variables in **train_rl_model.py**.
 	Custom training commands** (directly modify the script or pass parameters; argparse is not implemented in the current script, so modifying variables directly is recommended):
-	(1)Modify **benchmark = ['TBHL']** to select the algorithm.
+	(1)Modify **benchmark = ['PG-HRL']** to select the algorithm.
 	(2)Modify **job_numbers = 10000** to control simulation length.
-	(3)Trained models are saved at **sequencing_models/TBHL\_{scenario\_id}.pt**.
+	(3)Trained models are saved at **sequencing_models/PG_HRL\_{scenario\_id}.pt**.
 3.2 Training Other RL Algorithms (SAC, TD3, DDQN, Rainbow\_DQN)
 	Modify the following in **train_rl_model.py**:
 		benchmark = \['SAC']  # or 'TD3', 'DDQN', 'Rainbow\_DQN'
@@ -77,14 +76,14 @@ project\_root/
 	(1)Compared algorithms: **benchmark = ['KT_DMOEA', 'DMOA_MHKT', 'FCP', 'Tr_DMOEA']**
 	(2)Each algorithm runs independently and generates the Pareto front
 	(3)Output directory: **test_result/DMO/**
-	(4)Note: This script first uses the pre-trained TBHL model (must be trained in advance) to generate the DRL baseline, then runs the evolutionary algorithms. Please ensure that **sequencing_models/TBHL\_{scenario\_id}.pt** exists, otherwise the DRL part will fail.
-4.3 Reinforcement Learning Algorithm Comparison (TBHL vs. SAC, TD3, DDQN, Rainbow_DQN)
+	(4)Note: This script first uses the pre-trained PG_HRL model (must be trained in advance) to generate the DRL baseline, then runs the evolutionary algorithms. Please ensure that **sequencing_models/PG_HRL\_{scenario\_id}.pt** exists, otherwise the DRL part will fail.
+4.3 Reinforcement Learning Algorithm Comparison (PG-HRL vs. SAC, TD3, DDQN, Rainbow_DQN)
 	Run the dispatching rule comparison:
 		compare_rl_algorithms.py*
-	(1)Compared algorithms: benchmark = **['SAC', 'TD3', 'TBHL', 'DDQN', 'Rainbow\_DQN']**
+	(1)Compared algorithms: benchmark = **['SAC', 'TD3', 'PG-HRL', 'DDQN', 'Rainbow\_DQN']**
 	(2) Automatically loads pre-trained models for each algorithm (if not available, they must be trained in advance using **train_rl_model.py**)
 	(3)Output directory: **test_result/Ref_Learning/**
- 4.4 Generalization Experiment (Cross-Scenario Testing of TBHL's Generalization Ability)
+ 4.4 Generalization Experiment (Cross-Scenario Testing of PG_HRL's Generalization Ability)
 	Run the dispatching rule comparison:
 		generalization_experiment.py
 	(1)Train models using three representative training scenarios (L9-6, L9-8, L9-4), then test on all 9 scenarios
@@ -93,7 +92,7 @@ project\_root/
 		Generalization bar charts, heatmaps, and radar charts (**.png** and **.pdf**)
 		Detailed analysis Excel (model comparison per scenario, inter-group comparison, overall model performance)
 		Raw test data (**.pkl**)
- 4.5 Ablation Study (Verifying the Effectiveness of TBHL Modules)
+ 4.5 Ablation Study (Verifying the Effectiveness of PG-HRL Modules)
 	Run the dispatching rule comparison:
 		ablation_experiment.py
 	(1)Ablation settings:
@@ -126,7 +125,7 @@ project\_root/
 (3)Simulation hangs and does not terminate: The machine queue is empty and no new jobs arrive------Check if **initial_job_assignment** in **job_creation.py** runs correctly; ensure the **sufficient_stock** event is triggered.
 (4)HV calculation fails due to missing **pymoo**: Optional dependency------Run **pip install pymoo**; if not installed, the program will use a simplified HV approximation (which does not affect comparison trends).|
 (5)Multi-objective evolutionary algorithms run slowly: Large population size and number of generations------Reduce **pop_size** and **max_gen** in **compare_multi_objective_algorithms.py** (default values are 100/150).
-(6)Generalization experiment cannot find the TBHL model: Model not pre-trained------First run **train_rl_model.py** to train models for the three scenarios: L9-6, L9-8, and L9-4.
+(6)Generalization experiment cannot find the PG_HRL model: Model not pre-trained------First run **train_rl_model.py** to train models for the three scenarios: L9-6, L9-8, and L9-4.
 
 7. Customizing Experimental Configurations
 7.1 Modifying Scenario Parameters

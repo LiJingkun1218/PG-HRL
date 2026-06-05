@@ -20,8 +20,8 @@ plt.rcParams['savefig.dpi'] = 300
 # 1. Experiment config
 # ============================================
 
-# Algorithm selection (TBHL only)
-ALGORITHM = 'TBHL'
+# Algorithm selection (PG-HRL only)
+ALGORITHM = 'PG_HRL'
 brain_machine = importlib.import_module(f"algorithm.RL.brain_{ALGORITHM}") 
 # Scenario group definitions
 SCENARIO_GROUPS = {
@@ -1002,7 +1002,7 @@ class VisualizationGenerator:
 # 4. Core experiment functions
 # ============================================
 
-def find_or_train_model(scenario_id, algorithm='TBHL'):
+def find_or_train_model(scenario_id, algorithm='PG_HRL'):
     """Find or train the model for a given scenario."""
     scenario = None
     for s in orthogonal_scenarios:

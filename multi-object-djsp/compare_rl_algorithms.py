@@ -15,7 +15,7 @@ out_analysis = 1
 run_num = 25
 job_num = 50
 drl_preference_runs = 5
-benchmark = ['SAC','TD3','TBHL','DDQN','Rainbow_DQN']  
+benchmark = ['SAC','TD3','PG_HRL','DDQN','Rainbow_DQN']
 
 all_scenarios=get_all_scenarios() 
 for scenario in all_scenarios:

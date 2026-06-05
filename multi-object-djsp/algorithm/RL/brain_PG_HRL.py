@@ -14,12 +14,12 @@ from common.shared_modules import ContinuousSequencingBrain, ContinuousSchedulin
 
 
 class sequencing_brain(ContinuousSequencingBrain):
-    """TBHL-based sequencing brain with multi-step returns and TD(lambda)."""
+    """PG-HRL-based sequencing brain with multi-step returns and TD(lambda)."""
     def __init__(self, env, job_creator, all_machines, job_numbers, *args, **kwargs):
         # Call parent class initializer
         super().__init__(env, job_creator, all_machines, job_numbers, *args, **kwargs)
         
-        # TBHL-specific parameters
+        # PG-HRL-specific parameters
         self.minibatch_size = 128
         self.rep_memo_size = 640
         self.trajectory_buffer_size = 64
@@ -47,7 +47,7 @@ class sequencing_brain(ContinuousSequencingBrain):
             for m in self.m_list:
                 m.job_sequencing = self.action_sqc_rule
 
-    # ========== Training flow (TBHL-specific) ==========
+    # ========== Training flow (PG-HRL-specific) ==========
     def training_process_parameter_sharing(self):
         """Training process with multi-machine shared learning."""
         yield self.env.timeout(self.warm_up + 1)
@@ -316,5 +316,5 @@ class sequencing_brain(ContinuousSequencingBrain):
 
     # ========== Override base training flow ==========
     def training_process(self):
-        """Override base training flow with TBHL-specific process."""
+        """Override base training flow with PG-HRL-specific process."""
         return self.training_process_parameter_sharing()

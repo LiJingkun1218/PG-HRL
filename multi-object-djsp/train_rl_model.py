@@ -6,9 +6,9 @@ from common.experiment_scene import get_all_scenarios
 from common.shared_modules import ShopFloor
 import importlib
  
-benchmark = ['TBHL'] 
-#benchmark = ['TBHL','SAC','TD3','DDQN','Rainbow_DQN'] 
-#benchmark = ['Ablation1','Ablation2','Ablation3','Ablation4']  #Ablation experiments for different components of TBHL (e.g., without load balance, without delay info, etc.)
+benchmark = ['PG_HRL'] 
+#benchmark = ['PG_HRL','SAC','TD3','DDQN','Rainbow_DQN'] 
+#benchmark = ['Ablation1','Ablation2','Ablation3','Ablation4']  #Ablation experiments for different components of PG_HRL (e.g., without load balance, without delay info, etc.)
 job_numbers = 10000
 if __name__ == "__main__":   
     all_scenarios=get_all_scenarios() 
@@ -20,9 +20,9 @@ if __name__ == "__main__":
             address=f"{sys.path[0]}/sequencing_models/{rule}_{scenario_id}.pt"  
             print(f'\n=== scenario={scenario_id},Algorithm{rule}model training:===')  
             #Ablation experiments Model training
-            # brain_machine = importlib.import_module(f"algorithm.RL.brain_TBHL") 
-            # address=f"{sys.path[0]}/sequencing_models/TBHL_{rule}_{scenario_id}.pt"         
-            # print(f'\n=== scenario={scenario_id},Algorithm TBHL_{rule}model training:===')       
+# brain_machine = importlib.import_module(f"algorithm.RL.brain_PG_HRL") 
+            # address=f"{sys.path[0]}/sequencing_models/PG_HRL_{rule}_{scenario_id}.pt"         
+            # print(f'\n=== scenario={scenario_id},Algorithm PG_HRL_{rule}model training:===')       
             
             env = simpy.Environment()  
             spf = ShopFloor(env, job_numbers, scenario['parameters'],brain_machine,

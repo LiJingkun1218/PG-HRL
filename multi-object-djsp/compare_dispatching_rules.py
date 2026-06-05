@@ -15,7 +15,7 @@ out_analysis = 1
 run_num = 25    
 job_num = 50      
 drl_preference_runs = 6
-baseline = 'TBHL'
+baseline = 'PG_HRL'
 benchmark = ['CR', 'MDD', 'MOD', 'MS', 'ATC', 'EDD']
 all_scenarios=get_all_scenarios() 
 for scenario in all_scenarios:

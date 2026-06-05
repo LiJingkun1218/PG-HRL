@@ -1223,49 +1223,49 @@ class DiscreteSequencingBrain:
         delay = self.calculate_delay( sqc_data, job_position) if not (self.ablation == "Ablation0" or self.ablation == "Ablation2") else 0            
         return job_position, delay
 
-        def calculate_delay(self, sqc_data, job_position):  # Allowed delay
-            current_pt = sqc_data[0]  # Current op time
-            remaining_job_pt = sqc_data[1]  # Remaining time
-            due_list = sqc_data[2]  # Due dates
-            env_now = sqc_data[3]  # Current time
-            remaining_no_op = sqc_data[10]  # Op index
-            job_idx = sqc_data[-2][job_position]  # Job id
-            
-            t_curr = current_pt[job_position] if len(current_pt) > job_position else 0.0
-            t_post = remaining_job_pt[job_position] if len(remaining_job_pt) > job_position else 0.0
-            dd = due_list[job_position] if len(due_list) > job_position else 0.0 
-            remaining_no_op_val = remaining_no_op[job_position] if len(remaining_no_op) > job_position else 0
-            allowed_delay = dd - env_now - t_curr - t_post        
-            opnum = self.m_no -  remaining_no_op_val
-            idle_time_list = self.job_creator.idle_time[job_idx][1:opnum+1]
-            # 3) Theoretical delay (alpha + conservative factor)
-            if self.job_creator.production_record[job_idx][4] == True:
-                if opnum <= 1:
-                    if allowed_delay > 0 :            
-                        delay = allowed_delay / self.m_no
-                    else:
-                        delay  = 0
-                else:                
-                    if allowed_delay > 0  :
-                        mean_time = np.mean(idle_time_list)
-                        delay = max(0,min(mean_time,allowed_delay) - (env_now-self.job_creator.production_record[job_idx][0]))
-                    else:
-                        delay  = 0
-            else:
-                if allowed_delay > 0 :
-                    d_ratio = 0;m_len=0;n_len=0
-                    for m in self.m_list:
-                        if len(m.slack) > 0 :
-                            m_len += len(m.slack) ; n_len += len([num for num in m.slack if num < 0])/len(m.slack)
-                    d_ratio = n_len / m_len     
-                    if d_ratio == 0:
-                        d_ratio = random.random()   
-                    delay = allowed_delay * (1-d_ratio) 
-                    self.job_creator.idle_time[job_idx][0] = delay
+    def calculate_delay(self, sqc_data, job_position):  # Allowed delay
+        current_pt = sqc_data[0]  # Current op time
+        remaining_job_pt = sqc_data[1]  # Remaining time
+        due_list = sqc_data[2]  # Due dates
+        env_now = sqc_data[3]  # Current time
+        remaining_no_op = sqc_data[10]  # Op index
+        job_idx = sqc_data[-2][job_position]  # Job id
+        
+        t_curr = current_pt[job_position] if len(current_pt) > job_position else 0.0
+        t_post = remaining_job_pt[job_position] if len(remaining_job_pt) > job_position else 0.0
+        dd = due_list[job_position] if len(due_list) > job_position else 0.0 
+        remaining_no_op_val = remaining_no_op[job_position] if len(remaining_no_op) > job_position else 0
+        allowed_delay = dd - env_now - t_curr - t_post        
+        opnum = self.m_no -  remaining_no_op_val
+        idle_time_list = self.job_creator.idle_time[job_idx][1:opnum+1]
+        # 3) Theoretical delay (alpha + conservative factor)
+        if self.job_creator.production_record[job_idx][4] == True:
+            if opnum <= 1:
+                if allowed_delay > 0 :            
+                    delay = allowed_delay / self.m_no
                 else:
-                        delay  = 0  
-            
-            return delay
+                    delay  = 0
+            else:                
+                if allowed_delay > 0  :
+                    mean_time = np.mean(idle_time_list)
+                    delay = max(0,min(mean_time,allowed_delay) - (env_now-self.job_creator.production_record[job_idx][0]))
+                else:
+                    delay  = 0
+        else:
+            if allowed_delay > 0 :
+                d_ratio = 0;m_len=0;n_len=0
+                for m in self.m_list:
+                    if len(m.slack) > 0 :
+                        m_len += len(m.slack) ; n_len += len([num for num in m.slack if num < 0])/len(m.slack)
+                d_ratio = n_len / m_len     
+                if d_ratio == 0:
+                    d_ratio = random.random()   
+                delay = allowed_delay * (1-d_ratio) 
+                self.job_creator.idle_time[job_idx][0] = delay
+            else:
+                    delay  = 0  
+        
+        return delay
 
     # # RL action phase (base version)
     # def action_sqc_rule(self, sqc_data):
